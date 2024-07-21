@@ -2,7 +2,7 @@
   <a href="https://github.com/wainejr/ZigZagOS"><img src="./logo.png" alt="ZigZag OS"></a>
 </p>
 <p align="center">
-    <em>ZigZag OS, leverating Zig powers for embedded operational systems</em>
+    <em>ZigZag OS, leveraging Zig powers for embedded operational systems</em>
 </p>
 
 # ZigZag OS
