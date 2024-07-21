@@ -1,3 +1,6 @@
+.zig-cache
+build/
+
 # Prerequisites
 *.d
 
