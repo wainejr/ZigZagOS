@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
         .name = "ZigZagOS",
         // In this case the main source file is merely a path, however, in more
         // complicated build scripts, this could be a generated file.
-        .root_source_file = b.path("src/root.zig"),
+        .root_source_file = b.path("src/queue.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -31,10 +31,16 @@ pub fn build(b: *std.Build) void {
 
     const exe = b.addExecutable(.{
         .name = "ZigZagOS",
-        .root_source_file = b.path("src/main.zig"),
+        // .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
+    exe.linkLibC();
+
+    const c_module = b.createModule(.{});
+    c_module.addCSourceFile(.{ .file = .{ .cwd_relative = "src/testafila.c" } });
+    c_module.linkLibrary(lib);
+    exe.root_module.addImport("c_module", c_module);
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
