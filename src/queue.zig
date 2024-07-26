@@ -3,7 +3,8 @@ const stdout = std.io.getStdOut().writer();
 const stderr = std.io.getStdErr().writer();
 
 const c = @cImport({
-    @cInclude("/home/waine/Documents/Codigos/ZigZagOS/src/queue.h");
+    // @cInclude("/home/waine/Documents/Codigos/ZigZagOS/src/queue.h");
+    @cInclude("queue.h");
 });
 
 export fn queue_size(queue: ?*c.queue_t) i32 {

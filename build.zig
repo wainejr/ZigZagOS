@@ -3,7 +3,7 @@ const std = @import("std");
 // Although this function looks imperative, note that its job is to
 // declaratively construct a build graph that will be executed by an external
 // runner.
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     // Standard target options allows the person running `zig build` to choose
     // what target to build for. Here we do not override the defaults, which
     // means any target is allowed, and the default is native. Other options
@@ -15,6 +15,10 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
+    const test_filename = b.option([]const u8, "test", "Test name to compile") orelse {
+        @panic("-Dtest must be specified");
+    };
+
     const lib = b.addStaticLibrary(.{
         .name = "ZigZagOS",
         // In this case the main source file is merely a path, however, in more
@@ -23,6 +27,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    lib.addIncludePath(b.path("include"));
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
@@ -30,15 +35,20 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(lib);
 
     const exe = b.addExecutable(.{
-        .name = "ZigZagOS",
+        .name = test_filename,
         // .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
+    exe.addIncludePath(b.path("include"));
     exe.linkLibC();
 
+    var filename_compile: [100]u8 = undefined;
+    const filename_slice = filename_compile[0..];
+    const filename_use = try std.fmt.bufPrint(filename_slice, "src/tests/c/{s}.c", .{test_filename});
+
     const c_module = b.createModule(.{});
-    c_module.addCSourceFile(.{ .file = .{ .cwd_relative = "src/testafila.c" } });
+    c_module.addCSourceFile(.{ .file = b.path(filename_use) });
     c_module.linkLibrary(lib);
     exe.root_module.addImport("c_module", c_module);
 
@@ -94,4 +104,9 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_lib_unit_tests.step);
     test_step.dependOn(&run_exe_unit_tests.step);
+}
+
+fn installHeader(b: *std.Build, lib: *std.Build.Step.Compile, hfile: []const u8) void {
+    const src_path = b.pathJoin(&.{ "include", hfile });
+    lib.installHeader(b.path(src_path), hfile);
 }
