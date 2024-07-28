@@ -45,7 +45,7 @@ pub fn build(b: *std.Build) !void {
 
     var filename_compile: [100]u8 = undefined;
     const filename_slice = filename_compile[0..];
-    const filename_use = try std.fmt.bufPrint(filename_slice, "src/tests/c/{s}.c", .{test_filename});
+    const filename_use = try std.fmt.bufPrint(filename_slice, "tests/c/{s}.c", .{test_filename});
 
     const c_module = b.createModule(.{});
     c_module.addCSourceFile(.{ .file = b.path(filename_use) });
