@@ -15,9 +15,10 @@ pub fn build(b: *std.Build) !void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const test_filename = b.option([]const u8, "test", "Test name to compile") orelse {
-        @panic("-Dtest must be specified");
-    };
+    const test_filename = b.option([]const u8, "test", "Test name to compile") orelse "testafila";
+    // {
+    //     @panic("-Dtest must be specified");
+    // };
 
     // const lib_names: [][]u8 = .{ "src/queue.zig", "src/zigzagos_core.zig" };
     const lib = b.addStaticLibrary(.{
@@ -29,6 +30,7 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
     });
     lib.addIncludePath(b.path("include"));
+    lib.linkLibC();
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
