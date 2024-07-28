@@ -19,11 +19,12 @@ pub fn build(b: *std.Build) !void {
         @panic("-Dtest must be specified");
     };
 
+    // const lib_names: [][]u8 = .{ "src/queue.zig", "src/zigzagos_core.zig" };
     const lib = b.addStaticLibrary(.{
         .name = "ZigZagOS",
         // In this case the main source file is merely a path, however, in more
         // complicated build scripts, this could be a generated file.
-        .root_source_file = b.path("src/queue.zig"),
+        .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = optimize,
     });

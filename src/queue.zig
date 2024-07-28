@@ -7,7 +7,7 @@ const c = @cImport({
     @cInclude("queue.h");
 });
 
-export fn queue_size(queue: ?*c.queue_t) i32 {
+pub export fn queue_size(queue: ?*c.queue_t) i32 {
     var n_elems: i32 = 0;
     const ini_elem = queue;
     var elem = queue;
@@ -23,7 +23,7 @@ export fn queue_size(queue: ?*c.queue_t) i32 {
 
 const call_print = ?*const fn (?*anyopaque) callconv(.C) void;
 
-export fn queue_print(name: ?[*:0]u8, queue: ?*c.queue_t, print_elem: call_print) void {
+pub export fn queue_print(name: ?[*:0]u8, queue: ?*c.queue_t, print_elem: call_print) void {
     // std.debug.print("string len {d}\n", name.?.len);
     stdout.print("{s}", .{name.?}) catch {};
     stdout.print("[", .{}) catch {};
@@ -44,7 +44,7 @@ export fn queue_print(name: ?[*:0]u8, queue: ?*c.queue_t, print_elem: call_print
     stdout.print("]\n", .{}) catch {};
 }
 
-export fn queue_append(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
+pub export fn queue_append(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
     if (queue == null) {
         stderr.print("queue is null\n", .{}) catch {};
         return -1;
@@ -76,7 +76,7 @@ export fn queue_append(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
     return 0;
 }
 
-export fn queue_remove(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
+pub export fn queue_remove(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
     if (queue == null) {
         stderr.print("queue is null\n", .{}) catch {};
         return -1;
