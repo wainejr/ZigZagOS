@@ -1,0 +1,14 @@
+main: inicio
+    Ping: inicio
+    Ping: 0
+        Pong: inicio
+        Pong: 0
+    Ping: 1
+        Pong: 1
+    Ping: 2
+        Pong: 2
+    Ping: 3
+        Pong: 3
+    Ping: fim
+        Pong: fim
+main: fim
