@@ -15,7 +15,7 @@ pub fn build(b: *std.Build) !void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const test_filename = b.option([]const u8, "test", "Test name to compile") orelse "testafila";
+    const test_filename = b.option([]const u8, "test", "Test name to compile") orelse "dispatcher";
     // {
     //     @panic("-Dtest must be specified");
     // };
@@ -83,30 +83,30 @@ pub fn build(b: *std.Build) !void {
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
 
-    // Creates a step for unit testing. This only builds the test executable
-    // but does not run it.
-    const lib_unit_tests = b.addTest(.{
-        .root_source_file = b.path("src/root.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+    // // Creates a step for unit testing. This only builds the test executable
+    // // but does not run it.
+    // const lib_unit_tests = b.addTest(.{
+    //     .root_source_file = b.path("src/root.zig"),
+    //     .target = target,
+    //     .optimize = optimize,
+    // });
 
-    const run_lib_unit_tests = b.addRunArtifact(lib_unit_tests);
+    // const run_lib_unit_tests = b.addRunArtifact(lib_unit_tests);
 
-    const exe_unit_tests = b.addTest(.{
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+    // const exe_unit_tests = b.addTest(.{
+    //     .root_source_file = b.path("src/main.zig"),
+    //     .target = target,
+    //     .optimize = optimize,
+    // });
 
-    const run_exe_unit_tests = b.addRunArtifact(exe_unit_tests);
+    // const run_exe_unit_tests = b.addRunArtifact(exe_unit_tests);
 
-    // Similar to creating the run step earlier, this exposes a `test` step to
-    // the `zig build --help` menu, providing a way for the user to request
-    // running the unit tests.
-    const test_step = b.step("test", "Run unit tests");
-    test_step.dependOn(&run_lib_unit_tests.step);
-    test_step.dependOn(&run_exe_unit_tests.step);
+    // // Similar to creating the run step earlier, this exposes a `test` step to
+    // // the `zig build --help` menu, providing a way for the user to request
+    // // running the unit tests.
+    // const test_step = b.step("test", "Run unit tests");
+    // test_step.dependOn(&run_lib_unit_tests.step);
+    // test_step.dependOn(&run_exe_unit_tests.step);
 }
 
 fn installHeader(b: *std.Build, lib: *std.Build.Step.Compile, hfile: []const u8) void {

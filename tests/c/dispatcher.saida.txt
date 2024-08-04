@@ -1,0 +1,37 @@
+main: inicio
+main: fim
+    Pang: inicio
+    Pang: 0
+        Peng: inicio
+        Peng: 0
+            Ping: inicio
+            Ping: 0
+                Pong: inicio
+                Pong: 0
+                    Pung: inicio
+                    Pung: 0
+    Pang: 1
+        Peng: 1
+            Ping: 1
+                Pong: 1
+                    Pung: 1
+    Pang: 2
+        Peng: 2
+            Ping: 2
+                Pong: 2
+                    Pung: 2
+    Pang: 3
+        Peng: 3
+            Ping: 3
+                Pong: 3
+                    Pung: 3
+    Pang: 4
+        Peng: 4
+            Ping: 4
+                Pong: 4
+                    Pung: 4
+    Pang: fim
+        Peng: fim
+            Ping: fim
+                Pong: fim
+                    Pung: fim

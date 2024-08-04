@@ -3,17 +3,16 @@ const stdout = std.io.getStdOut().writer();
 const stderr = std.io.getStdErr().writer();
 
 const c = @cImport({
-    // @cInclude("/home/waine/Documents/Codigos/ZigZagOS/src/queue.h");
     @cInclude("queue.h");
 });
 
-pub export fn queue_size(queue: ?*c.queue_t) i32 {
+pub export fn queue_size(queue: [*c]c.queue_t) i32 {
     var n_elems: i32 = 0;
-    const ini_elem = queue;
-    var elem = queue;
+    const ini_elem: ?*c.queue_t = queue;
+    var elem: ?*c.queue_t = queue;
     while (elem != null) {
         n_elems += 1;
-        elem = elem.?.next;
+        elem = elem.?.*.next;
         if (elem == ini_elem) {
             break;
         }
@@ -23,8 +22,9 @@ pub export fn queue_size(queue: ?*c.queue_t) i32 {
 
 const call_print = ?*const fn (?*anyopaque) callconv(.C) void;
 
-pub export fn queue_print(name: ?[*:0]u8, queue: ?*c.queue_t, print_elem: call_print) void {
+pub export fn queue_print(name: ?[*:0]u8, queue_arg: [*c]c.queue_t, print_elem: call_print) void {
     // std.debug.print("string len {d}\n", name.?.len);
+    const queue: ?*c.queue_t = queue_arg;
     stdout.print("{s}", .{name.?}) catch {};
     stdout.print("[", .{}) catch {};
     if (queue == null) {
@@ -44,7 +44,10 @@ pub export fn queue_print(name: ?[*:0]u8, queue: ?*c.queue_t, print_elem: call_p
     stdout.print("]\n", .{}) catch {};
 }
 
-pub export fn queue_append(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
+pub export fn queue_append(queue_arg: [*c][*c]c.queue_t, elem_arg: [*c]c.queue_t) i32 {
+    const queue: ?*?*c.queue_t = queue_arg;
+    const elem: ?*c.queue_t = elem_arg;
+
     if (queue == null) {
         stderr.print("queue is null\n", .{}) catch {};
         return -1;
@@ -76,7 +79,10 @@ pub export fn queue_append(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
     return 0;
 }
 
-pub export fn queue_remove(queue: ?*?*c.queue_t, elem: ?*c.queue_t) i32 {
+pub export fn queue_remove(queue_arg: [*c][*c]c.queue_t, elem_arg: [*c]c.queue_t) i32 {
+    const queue: ?*?*c.queue_t = queue_arg;
+    const elem: ?*c.queue_t = elem_arg;
+
     if (queue == null) {
         stderr.print("queue is null\n", .{}) catch {};
         return -1;
