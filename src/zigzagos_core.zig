@@ -65,7 +65,21 @@ fn scheduler() [*c]c.task_t {
     if (queue_lib.queue_size(@ptrCast(task_status_queue(Status.ready).*)) == 0) {
         return null;
     }
-    return task_status_queue(Status.ready).*;
+    const head_task = task_status_queue(Status.ready).*.*.id;
+    var task_run: [*c]c.task_t = task_status_queue(Status.ready).*;
+    var task_check: [*c]c.task_t = task_run.*.next;
+
+    while (task_check.*.id != head_task) {
+        var task_age = task_check;
+        if (task_fullprio(task_check) < task_fullprio(task_run)) {
+            task_age = task_run;
+            task_run = task_check;
+        }
+        task_age.*.prio_dyn -= 1;
+        task_check = task_check.*.next;
+    }
+    task_run.*.prio_dyn = 0;
+    return task_run;
 }
 
 fn deallocate_task_stack(tid: i32) void {
@@ -104,6 +118,8 @@ fn inner_create_task(task: [*c]c.task_t) void {
         .next = null,
         .prev = null,
         .status = status2number(Status.ready),
+        .prio_static = 0,
+        .prio_dyn = 0,
     };
 
     _ = c.getcontext(&(task.*.context));
@@ -164,4 +180,22 @@ pub export fn task_exit(exit_code: i32) void {
 pub export fn task_yield() void {
     update_task_status(task_curr.?, Status.ready);
     _ = task_switch(&task_dispatcher);
+}
+
+fn task_fullprio(task: [*c]c.task_t) i32 {
+    return task.*.prio_dyn + task.*.prio_static;
+}
+
+pub export fn task_setprio(task: [*c]c.task_t, prio: c_int) void {
+    if (task == null) {
+        return task_setprio(task_curr, prio);
+    }
+    task.*.prio_static = prio;
+}
+
+pub export fn task_getprio(task: [*c]c.task_t) i32 {
+    if (task == null) {
+        return task_getprio(task_curr);
+    }
+    return task.*.prio_static;
 }

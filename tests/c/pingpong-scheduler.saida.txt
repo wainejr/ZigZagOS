@@ -1,0 +1,62 @@
+main: inicio
+main: fim
+    Pang: inicio (prioridade 0)
+    Pang: 0
+    Pang: 1
+        Peng: inicio (prioridade 2)
+        Peng: 0
+    Pang: 2
+            Ping: inicio (prioridade 4)
+            Ping: 0
+    Pang: 3
+        Peng: 1
+                Pong: inicio (prioridade 6)
+                Pong: 0
+    Pang: 4
+                    Pung: inicio (prioridade 8)
+                    Pung: 0
+    Pang: 5
+        Peng: 2
+            Ping: 1
+    Pang: 6
+    Pang: 7
+        Peng: 3
+                Pong: 1
+    Pang: 8
+            Ping: 2
+    Pang: 9
+        Peng: 4
+                    Pung: 1
+    Pang: fim
+        Peng: 5
+            Ping: 3
+                Pong: 2
+        Peng: 6
+        Peng: 7
+            Ping: 4
+        Peng: 8
+                    Pung: 2
+        Peng: 9
+                Pong: 3
+            Ping: 5
+        Peng: fim
+            Ping: 6
+                Pong: 4
+                    Pung: 3
+            Ping: 7
+            Ping: 8
+                Pong: 5
+            Ping: 9
+            Ping: fim
+                    Pung: 4
+                Pong: 6
+                Pong: 7
+                Pong: 8
+                    Pung: 5
+                Pong: 9
+                Pong: fim
+                    Pung: 6
+                    Pung: 7
+                    Pung: 8
+                    Pung: 9
+                    Pung: fim
