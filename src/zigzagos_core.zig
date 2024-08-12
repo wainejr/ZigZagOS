@@ -1,6 +1,8 @@
 const c = @cImport({
     @cInclude("queue.h");
     @cInclude("ppos.h");
+    @cInclude("signal.h");
+    @cInclude("sys/time.h");
 });
 const queue_lib = @import("queue.zig");
 const std = @import("std");
@@ -14,12 +16,16 @@ var task_dispatcher: c.task_t = undefined;
 var task_curr: ?*c.task_t = null;
 var gid: i32 = 0;
 const stack_size = 1024 * 64;
+const quantum_size = 20;
 
 const Status = enum { ready, waiting, finished };
 
 var q_task_ready: [*c]c.task_t = null;
 var q_task_waiting: [*c]c.task_t = null;
 var q_task_finished: [*c]c.task_t = null;
+
+var g_timer: c.itimerval = undefined;
+var g_timer_action: c.struct_sigaction = undefined;
 
 fn task_status_queue(status: Status) [*c][*c]c.task_t {
     switch (status) {
@@ -79,6 +85,7 @@ fn scheduler() [*c]c.task_t {
         task_check = task_check.*.next;
     }
     task_run.*.prio_dyn = 0;
+    task_run.*.quantum = quantum_size;
     return task_run;
 }
 
@@ -120,6 +127,8 @@ fn inner_create_task(task: [*c]c.task_t) void {
         .status = status2number(Status.ready),
         .prio_static = 0,
         .prio_dyn = 0,
+        .quantum = quantum_size,
+        .sys_task = false,
     };
 
     _ = c.getcontext(&(task.*.context));
@@ -141,12 +150,51 @@ fn inner_create_task(task: [*c]c.task_t) void {
     _ = queue_lib.queue_append(@ptrCast(queue_add), @ptrCast(@constCast(task)));
 }
 
+fn timer_handler(_: i32) callconv(.C) void {
+    if (task_curr == null) {
+        return;
+    }
+    if (task_curr.?.*.sys_task) {
+        return;
+    }
+    task_curr.?.*.quantum -= 1;
+    if (task_curr.?.*.quantum == 0) {
+        task_yield();
+    }
+    return;
+}
+
+fn init_timer() void {
+    // registra a ação para o sinal de timer SIGALRM (sinal do timer)
+    g_timer_action.__sigaction_handler.sa_handler = timer_handler;
+    _ = c.sigemptyset(&g_timer_action.sa_mask);
+    g_timer_action.sa_flags = 0;
+    if (c.sigaction(c.SIGALRM, &g_timer_action, 0) < 0) {
+        // c.perror("Erro em sigaction: ");
+        std.process.exit(1);
+    }
+    // ajusta valores do temporizador
+    g_timer.it_value.tv_usec = 1; // primeiro disparo, em micro-segundos
+    g_timer.it_value.tv_sec = 0; // primeiro disparo, em segundos
+    g_timer.it_interval.tv_usec = 100; // disparos subsequentes, em micro-segundos
+    g_timer.it_interval.tv_sec = 0; // disparos subsequentes, em segundos
+
+    // arma o temporizador ITIMER_REAL
+    if (c.setitimer(c.ITIMER_REAL, &g_timer, 0) < 0) {
+        // perror("Erro em setitimer: ");
+        std.process.exit(1);
+    }
+}
+
 pub export fn ppos_init() void {
     // c.setvbuf(c.stdout, 0, c._IONBF, 0);
     inner_create_task(&task_main);
     task_curr = &task_main;
 
     _ = task_init(&task_dispatcher, dispatcher, @ptrCast(@constCast("Dispatcher")));
+    task_dispatcher.sys_task = true;
+
+    init_timer();
     _ = task_switch(&task_dispatcher);
 }
 
