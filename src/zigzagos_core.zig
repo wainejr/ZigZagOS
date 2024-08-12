@@ -176,7 +176,7 @@ fn init_timer() void {
     // ajusta valores do temporizador
     g_timer.it_value.tv_usec = 1; // primeiro disparo, em micro-segundos
     g_timer.it_value.tv_sec = 0; // primeiro disparo, em segundos
-    g_timer.it_interval.tv_usec = 100; // disparos subsequentes, em micro-segundos
+    g_timer.it_interval.tv_usec = 1000; // disparos subsequentes, em micro-segundos
     g_timer.it_interval.tv_sec = 0; // disparos subsequentes, em segundos
 
     // arma o temporizador ITIMER_REAL
