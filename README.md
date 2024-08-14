@@ -25,3 +25,6 @@ ZigZag is an operational system for embedded systems written in Zig
 * https://www.eletrogate.com/display-tft-lcd-1.3-spi-rgb-240x240-st7789?utm_content=&utm_term=&gad_source=1
 
 ESP32 with TFT+Joystick+breadboard is a good idea, later we can make a shield for it.
+
+* https://wiki.sipeed.com/hardware/en/lichee/RV/Dock.html
+* https://pt.aliexpress.com/item/1005005603677106.html
