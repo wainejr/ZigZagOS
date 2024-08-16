@@ -24,6 +24,11 @@ typedef struct task_t
   int quantum;
   bool sys_task;
 
+  unsigned int n_activations;
+  unsigned int start_time;
+  unsigned int exec_time;
+  unsigned int proc_time;
+
 } task_t ;
 
 // estrutura que define um semáforo

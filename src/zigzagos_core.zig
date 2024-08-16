@@ -4,6 +4,10 @@ const c = @cImport({
     @cInclude("signal.h");
     @cInclude("sys/time.h");
 });
+
+const stdout = std.io.getStdOut().writer();
+const stderr = std.io.getStdErr().writer();
+
 const queue_lib = @import("queue.zig");
 const std = @import("std");
 var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
@@ -86,6 +90,7 @@ fn scheduler() [*c]c.task_t {
     }
     task_run.*.prio_dyn = 0;
     task_run.*.quantum = quantum_size;
+    task_run.*.n_activations += 1;
     return task_run;
 }
 
@@ -129,6 +134,10 @@ fn inner_create_task(task: [*c]c.task_t) void {
         .prio_dyn = 0,
         .quantum = quantum_size,
         .sys_task = false,
+        .n_activations = 0,
+        .exec_time = 0,
+        .start_time = systime(),
+        .proc_time = 0,
     };
 
     _ = c.getcontext(&(task.*.context));
@@ -150,10 +159,21 @@ fn inner_create_task(task: [*c]c.task_t) void {
     _ = queue_lib.queue_append(@ptrCast(queue_add), @ptrCast(@constCast(task)));
 }
 
+var total_time: u32 = 0;
+
+pub export fn systime() u32 {
+    return total_time;
+}
+
 fn timer_handler(_: i32) callconv(.C) void {
+    total_time += 1;
+
     if (task_curr == null) {
         return;
     }
+    task_curr.?.proc_time += 1;
+    task_curr.?.exec_time = systime() - task_curr.?.start_time;
+
     if (task_curr.?.*.sys_task) {
         return;
     }
@@ -161,7 +181,6 @@ fn timer_handler(_: i32) callconv(.C) void {
     if (task_curr.?.*.quantum == 0) {
         task_yield();
     }
-    return;
 }
 
 fn init_timer() void {
@@ -185,7 +204,6 @@ fn init_timer() void {
         std.process.exit(1);
     }
 }
-
 pub export fn ppos_init() void {
     // c.setvbuf(c.stdout, 0, c._IONBF, 0);
     inner_create_task(&task_main);
@@ -209,6 +227,7 @@ pub export fn task_init(task: [*c]c.task_t, start_func: ?*const fn () callconv(.
 pub export fn task_switch(task: [*c]c.task_t) i32 {
     const prev_task = task_curr.?;
     task_curr = task;
+    task_curr.?.n_activations += 1;
     return c.swapcontext(&(prev_task.context), &(task.*.context));
 }
 
@@ -217,7 +236,11 @@ pub export fn task_id() i32 {
 }
 
 pub export fn task_exit(exit_code: i32) void {
+    const t = task_curr.?;
+    t.*.exec_time = systime() - t.start_time;
+
     update_task_status(task_curr.?, Status.finished);
+    stdout.print("Task {} exit: execution time {} ms, processor time {} ms, {} activations\n", .{ t.id, t.exec_time, t.proc_time, t.n_activations }) catch {};
 
     if (task_curr.?.id == task_dispatcher.id) {
         std.process.exit(if (exit_code == 0) 0 else 255);
