@@ -91,6 +91,7 @@ fn scheduler() [*c]c.task_t {
     task_run.*.prio_dyn = 0;
     task_run.*.quantum = quantum_size;
     task_run.*.n_activations += 1;
+    update_task_status(task_curr.?, Status.ready);
     return task_run;
 }
 
@@ -130,6 +131,7 @@ fn inner_create_task(task: [*c]c.task_t) void {
         .next = null,
         .prev = null,
         .status = status2number(Status.ready),
+        .exit_code = 0,
         .prio_static = 0,
         .prio_dyn = 0,
         .quantum = quantum_size,
@@ -138,6 +140,7 @@ fn inner_create_task(task: [*c]c.task_t) void {
         .exec_time = 0,
         .start_time = systime(),
         .proc_time = 0,
+        .tasks_waiting = null,
     };
 
     _ = c.getcontext(&(task.*.context));
@@ -224,6 +227,18 @@ pub export fn task_init(task: [*c]c.task_t, start_func: ?*const fn () callconv(.
     return task.*.id;
 }
 
+pub export fn task_wait(task: [*c]c.task_t) i32 {
+    if (task.*.status == status2number(Status.finished)) {
+        return task.*.exit_code;
+    }
+
+    _ = queue_lib.queue_remove(@ptrCast(task_status_queue(number2status(task_curr.?.*.status))), @ptrCast(task_curr));
+    _ = queue_lib.queue_append(@ptrCast(&(task.*.tasks_waiting)), @ptrCast(task_curr));
+    task_yield();
+
+    return task.*.exit_code;
+}
+
 pub export fn task_switch(task: [*c]c.task_t) i32 {
     const prev_task = task_curr.?;
     task_curr = task;
@@ -238,6 +253,13 @@ pub export fn task_id() i32 {
 pub export fn task_exit(exit_code: i32) void {
     const t = task_curr.?;
     t.*.exec_time = systime() - t.start_time;
+    t.*.exit_code = exit_code;
+
+    while (t.*.tasks_waiting != null) {
+        const tw: [*c]c.task_t = @ptrCast(@alignCast(t.*.tasks_waiting));
+        _ = queue_lib.queue_remove(@ptrCast(&(t.*.tasks_waiting)), @ptrCast(tw));
+        _ = queue_lib.queue_append(@ptrCast(task_status_queue(number2status(tw.?.*.status))), @ptrCast(tw));
+    }
 
     update_task_status(task_curr.?, Status.finished);
     stdout.print("Task {} exit: execution time {} ms, processor time {} ms, {} activations\n", .{ t.id, t.exec_time, t.proc_time, t.n_activations }) catch {};
@@ -249,7 +271,6 @@ pub export fn task_exit(exit_code: i32) void {
 }
 
 pub export fn task_yield() void {
-    update_task_status(task_curr.?, Status.ready);
     _ = task_switch(&task_dispatcher);
 }
 

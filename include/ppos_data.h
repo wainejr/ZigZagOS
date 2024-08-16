@@ -17,6 +17,7 @@ typedef struct task_t
   int id ;				// identificador da tarefa
   ucontext_t context ;			// contexto armazenado da tarefa
   short status ;			// pronta, rodando, suspensa, ...
+  int exit_code;
   // ... (outros campos serão adicionados mais tarde)
 
   int prio_static;
@@ -29,6 +30,7 @@ typedef struct task_t
   unsigned int exec_time;
   unsigned int proc_time;
 
+  void* tasks_waiting;
 } task_t ;
 
 // estrutura que define um semáforo

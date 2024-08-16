@@ -1,0 +1,71 @@
+main: inicio
+main: 0
+    Pang: inicio
+    Pang: 0
+        Peng: inicio
+        Peng: 0
+            Ping: inicio
+            Ping: 0
+                Pong: inicio
+                Pong: 0
+                    Pung: inicio
+                    Pung: 0
+main: 1
+    Pang: 1
+        Peng: 1
+            Ping: 1
+                Pong: 1
+                    Pung: 1
+            Ping: 2
+                    Pung: 2
+main: esperando Pang...
+    Pang: 2
+        Peng: 2
+                Pong: 2
+        Peng: 3
+            Ping: 3
+                    Pung: 3
+    Pang: 3
+                Pong: 3
+        Peng: 4
+            Ping: 4
+                    Pung: 4
+    Pang: fim
+Task 2 exit: execution time 17779 ms, processor time  3234 ms, 324 activations
+                Pong: 4
+main: Pang acabou com exit code 2
+main: esperando Peng...
+                    Pung: 5
+        Peng: 5
+            Ping: 5
+                Pong: 5
+        Peng: fim
+Task 3 exit: execution time 24188 ms, processor time  4839 ms, 484 activations
+            Ping: 6
+                    Pung: 6
+main: Peng acabou com exit code 3
+main: esperando Ping...
+                Pong: 6
+                    Pung: 7
+            Ping: 7
+                Pong: 7
+            Ping: fim
+Task 4 exit: execution time 29024 ms, processor time  6446 ms, 645 activations
+                    Pung: 8
+main: Ping acabou com exit code 4
+main: esperando Pong...
+                Pong: 8
+                    Pung: 9
+                Pong: 9
+                    Pung: 10
+                Pong: fim
+Task 5 exit: execution time 32266 ms, processor time  8062 ms, 807 activations
+main: Pong acabou com exit code 5
+main: esperando Pung...
+                    Pung: 11
+                    Pung: fim
+Task 6 exit: execution time 33870 ms, processor time  9664 ms, 967 activations
+main: Pung acabou com exit code 6
+main: fim
+Task 0 exit: execution time 33870 ms, processor time  1625 ms, 168 activations
+Task 1 exit: execution time 33870 ms, processor time     0 ms, 3395 activations
