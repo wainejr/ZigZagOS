@@ -22,11 +22,12 @@ var gid: i32 = 0;
 const stack_size = 1024 * 64;
 const quantum_size = 20;
 
-const Status = enum { ready, waiting, finished };
+const Status = enum { ready, waiting, finished, sleep };
 
 var q_task_ready: [*c]c.task_t = null;
 var q_task_waiting: [*c]c.task_t = null;
 var q_task_finished: [*c]c.task_t = null;
+var q_task_sleep: [*c]c.task_t = null;
 
 var g_timer: c.itimerval = undefined;
 var g_timer_action: c.struct_sigaction = undefined;
@@ -36,6 +37,7 @@ fn task_status_queue(status: Status) [*c][*c]c.task_t {
         Status.ready => return &q_task_ready,
         Status.waiting => return &q_task_waiting,
         Status.finished => return &q_task_finished,
+        Status.sleep => return &q_task_sleep,
     }
 }
 
@@ -44,6 +46,7 @@ fn status2number(status: Status) c_short {
         Status.ready => return 0,
         Status.waiting => return 1,
         Status.finished => return 2,
+        Status.sleep => return 3,
     }
 }
 
@@ -52,6 +55,7 @@ fn number2status(number: c_short) Status {
         0 => return Status.ready,
         1 => return Status.waiting,
         2 => return Status.finished,
+        3 => return Status.sleep,
         else => unreachable,
     }
 }
@@ -72,6 +76,8 @@ fn update_task_status(task: *c.task_t, new_status: Status) void {
 }
 
 fn scheduler() [*c]c.task_t {
+    update_sleep_tasks();
+
     if (queue_lib.queue_size(@ptrCast(task_status_queue(Status.ready).*)) == 0) {
         return null;
     }
@@ -110,9 +116,10 @@ fn deallocate_task_stack(tid: i32) void {
 // ?*const fn () callconv(.C) void
 fn dispatcher() callconv(.C) void {
     const queue_ready = task_status_queue(Status.ready);
+    const queue_sleep = task_status_queue(Status.sleep);
     _ = queue_lib.queue_remove(@ptrCast(queue_ready), @ptrCast(@constCast(&task_dispatcher)));
 
-    while (queue_lib.queue_size(@ptrCast(queue_ready.*)) > 0) {
+    while (queue_lib.queue_size(@ptrCast(queue_ready.*)) > 0 or queue_lib.queue_size(@ptrCast(queue_sleep.*)) > 0) {
         const next_task = scheduler();
         if (next_task != null) {
             _ = task_switch(next_task);
@@ -140,6 +147,7 @@ fn inner_create_task(task: [*c]c.task_t) void {
         .exec_time = 0,
         .start_time = systime(),
         .proc_time = 0,
+        .awake_time = -1,
         .tasks_waiting = null,
     };
 
@@ -166,6 +174,18 @@ var total_time: u32 = 0;
 
 pub export fn systime() u32 {
     return total_time;
+}
+
+fn update_sleep_tasks() void {
+    const n_sleep = queue_lib.queue_size(@ptrCast(q_task_sleep));
+    var t_sleep_check = q_task_sleep;
+    for (0..@intCast(n_sleep)) |_| {
+        const next_task_check = t_sleep_check.*.next;
+        if (systime() >= t_sleep_check.*.awake_time) {
+            task_awake(t_sleep_check, &q_task_sleep);
+        }
+        t_sleep_check = next_task_check;
+    }
 }
 
 fn timer_handler(_: i32) callconv(.C) void {
@@ -196,7 +216,7 @@ fn init_timer() void {
         std.process.exit(1);
     }
     // ajusta valores do temporizador
-    g_timer.it_value.tv_usec = 1; // primeiro disparo, em micro-segundos
+    g_timer.it_value.tv_usec = 10; // primeiro disparo, em micro-segundos
     g_timer.it_value.tv_sec = 0; // primeiro disparo, em segundos
     g_timer.it_interval.tv_usec = 1000; // disparos subsequentes, em micro-segundos
     g_timer.it_interval.tv_sec = 0; // disparos subsequentes, em segundos
@@ -219,6 +239,25 @@ pub export fn ppos_init() void {
     _ = task_switch(&task_dispatcher);
 }
 
+pub export fn task_sleep(t: i32) void {
+    task_curr.?.awake_time = @intCast(systime());
+    task_curr.?.awake_time += t;
+    task_curr.?.status = status2number(Status.sleep);
+    task_suspend(task_status_queue(Status.sleep));
+}
+
+pub export fn task_suspend(queue: [*c][*c]c.task_t) void {
+    _ = queue_lib.queue_remove(@ptrCast(task_status_queue(Status.ready)), @ptrCast(task_curr));
+    _ = queue_lib.queue_append(@ptrCast(queue), @ptrCast(task_curr));
+    task_yield();
+}
+
+pub export fn task_awake(task: [*c]c.task_t, queue: [*c][*c]c.task_t) void {
+    task.*.status = status2number(Status.ready);
+    _ = queue_lib.queue_remove(@ptrCast(queue), @ptrCast(task));
+    _ = queue_lib.queue_append(@ptrCast(task_status_queue(Status.ready)), @ptrCast(task));
+}
+
 pub export fn task_init(task: [*c]c.task_t, start_func: ?*const fn () callconv(.C) void, arg: ?*anyopaque) i32 {
     // const ztask: *c.task_t = task.?;
     inner_create_task(task);
@@ -232,9 +271,7 @@ pub export fn task_wait(task: [*c]c.task_t) i32 {
         return task.*.exit_code;
     }
 
-    _ = queue_lib.queue_remove(@ptrCast(task_status_queue(number2status(task_curr.?.*.status))), @ptrCast(task_curr));
-    _ = queue_lib.queue_append(@ptrCast(&(task.*.tasks_waiting)), @ptrCast(task_curr));
-    task_yield();
+    task_suspend(@ptrCast(&(task.*.tasks_waiting)));
 
     return task.*.exit_code;
 }
@@ -257,8 +294,8 @@ pub export fn task_exit(exit_code: i32) void {
 
     while (t.*.tasks_waiting != null) {
         const tw: [*c]c.task_t = @ptrCast(@alignCast(t.*.tasks_waiting));
-        _ = queue_lib.queue_remove(@ptrCast(&(t.*.tasks_waiting)), @ptrCast(tw));
-        _ = queue_lib.queue_append(@ptrCast(task_status_queue(number2status(tw.?.*.status))), @ptrCast(tw));
+        tw.*.status = status2number(Status.ready);
+        task_awake(tw, @ptrCast(&(t.*.tasks_waiting)));
     }
 
     update_task_status(task_curr.?, Status.finished);

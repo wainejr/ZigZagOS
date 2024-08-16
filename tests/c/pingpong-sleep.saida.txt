@@ -1,0 +1,229 @@
+    0 ms: main: inicio
+    0 ms: main: espera Pang...
+    0 ms:     Pang: inicio
+    0 ms:     Pang vai dormir 600 ms
+    0 ms:         Peng: inicio
+    0 ms:         Peng vai dormir 1000 ms
+    0 ms:             Ping: inicio
+    0 ms:             Ping vai dormir 600 ms
+    0 ms:                 Pong: inicio
+    0 ms:                 Pong vai dormir 200 ms
+    0 ms:                     Pung: inicio
+    0 ms:                     Pung vai dormir 100 ms
+  100 ms:                     Pung dormiu     100 ms (ok)
+  100 ms:                     Pung vai dormir 400 ms
+  200 ms:                 Pong dormiu     200 ms (ok)
+  200 ms:                 Pong vai dormir 0 ms
+  200 ms:                 Pong dormiu     0 ms (ok)
+  200 ms:                 Pong vai dormir 600 ms
+  500 ms:                     Pung dormiu     400 ms (ok)
+  500 ms:                     Pung vai dormir 300 ms
+  600 ms:     Pang dormiu     600 ms (ok)
+  600 ms:     Pang vai dormir 100 ms
+  600 ms:             Ping dormiu     600 ms (ok)
+  600 ms:             Ping vai dormir 800 ms
+  700 ms:     Pang dormiu     100 ms (ok)
+  700 ms:     Pang vai dormir 700 ms
+  800 ms:                 Pong dormiu     600 ms (ok)
+  800 ms:                 Pong vai dormir 500 ms
+  800 ms:                     Pung dormiu     300 ms (ok)
+  800 ms:                     Pung vai dormir 300 ms
+ 1000 ms:         Peng dormiu     1000 ms (ok)
+ 1000 ms:         Peng vai dormir 700 ms
+ 1100 ms:                     Pung dormiu     300 ms (ok)
+ 1100 ms:                     Pung vai dormir 400 ms
+ 1300 ms:                 Pong dormiu     500 ms (ok)
+ 1300 ms:                 Pong vai dormir 900 ms
+ 1400 ms:             Ping dormiu     800 ms (ok)
+ 1400 ms:             Ping vai dormir 1000 ms
+ 1400 ms:     Pang dormiu     700 ms (ok)
+ 1400 ms:     Pang vai dormir 200 ms
+ 1500 ms:                     Pung dormiu     400 ms (ok)
+ 1500 ms:                     Pung vai dormir 0 ms
+ 1500 ms:                     Pung dormiu     0 ms (ok)
+ 1500 ms:                     Pung vai dormir 1000 ms
+ 1600 ms:     Pang dormiu     200 ms (ok)
+ 1600 ms:     Pang vai dormir 800 ms
+ 1700 ms:         Peng dormiu     700 ms (ok)
+ 1700 ms:         Peng vai dormir 500 ms
+ 2200 ms:                 Pong dormiu     900 ms (ok)
+ 2200 ms:                 Pong vai dormir 0 ms
+ 2200 ms:                 Pong dormiu     0 ms (ok)
+ 2200 ms:                 Pong vai dormir 400 ms
+ 2200 ms:         Peng dormiu     500 ms (ok)
+ 2200 ms:         Peng vai dormir 600 ms
+ 2400 ms:             Ping dormiu     1000 ms (ok)
+ 2400 ms:             Ping vai dormir 0 ms
+ 2400 ms:             Ping dormiu     0 ms (ok)
+ 2400 ms:             Ping vai dormir 1000 ms
+ 2400 ms:     Pang dormiu     800 ms (ok)
+ 2400 ms:     Pang vai dormir 300 ms
+ 2500 ms:                     Pung dormiu     1000 ms (ok)
+ 2500 ms:                     Pung vai dormir 1000 ms
+ 2600 ms:                 Pong dormiu     400 ms (ok)
+ 2600 ms:                 Pong vai dormir 1000 ms
+ 2700 ms:     Pang dormiu     300 ms (ok)
+ 2700 ms:     Pang vai dormir 700 ms
+ 2800 ms:         Peng dormiu     600 ms (ok)
+ 2800 ms:         Peng vai dormir 1000 ms
+ 3400 ms:             Ping dormiu     1000 ms (ok)
+ 3400 ms:             Ping vai dormir 300 ms
+ 3400 ms:     Pang dormiu     700 ms (ok)
+ 3400 ms:     Pang vai dormir 700 ms
+ 3500 ms:                     Pung dormiu     1000 ms (ok)
+ 3500 ms:                     Pung vai dormir 900 ms
+ 3600 ms:                 Pong dormiu     1000 ms (ok)
+ 3600 ms:                 Pong vai dormir 700 ms
+ 3700 ms:             Ping dormiu     300 ms (ok)
+ 3700 ms:             Ping vai dormir 800 ms
+ 3800 ms:         Peng dormiu     1000 ms (ok)
+ 3800 ms:         Peng vai dormir 200 ms
+ 4000 ms:         Peng dormiu     200 ms (ok)
+ 4000 ms:         Peng vai dormir 1000 ms
+ 4100 ms:     Pang dormiu     700 ms (ok)
+ 4100 ms:     Pang vai dormir 700 ms
+ 4300 ms:                 Pong dormiu     700 ms (ok)
+ 4300 ms:                 Pong vai dormir 1000 ms
+ 4400 ms:                     Pung dormiu     900 ms (ok)
+ 4400 ms:                     Pung vai dormir 400 ms
+ 4500 ms:             Ping dormiu     800 ms (ok)
+ 4500 ms:             Ping vai dormir 100 ms
+ 4600 ms:             Ping dormiu     100 ms (ok)
+ 4600 ms:             Ping vai dormir 0 ms
+ 4600 ms:             Ping dormiu     0 ms (ok)
+ 4600 ms:             Ping vai dormir 1000 ms
+ 4800 ms:     Pang dormiu     700 ms (ok)
+ 4800 ms:     Pang vai dormir 400 ms
+ 4800 ms:                     Pung dormiu     400 ms (ok)
+ 4800 ms:                     Pung vai dormir 900 ms
+ 5000 ms:         Peng dormiu     1000 ms (ok)
+ 5000 ms:         Peng vai dormir 700 ms
+ 5200 ms:     Pang dormiu     400 ms (ok)
+ 5200 ms:     Pang vai dormir 600 ms
+ 5300 ms:                 Pong dormiu     1000 ms (ok)
+ 5300 ms:                 Pong vai dormir 800 ms
+ 5600 ms:             Ping dormiu     1000 ms (ok)
+ 5600 ms:             Ping vai dormir 600 ms
+ 5700 ms:                     Pung dormiu     900 ms (ok)
+ 5700 ms:                     Pung vai dormir 200 ms
+ 5700 ms:         Peng dormiu     700 ms (ok)
+ 5700 ms:         Peng vai dormir 200 ms
+ 5800 ms:     Pang dormiu     600 ms (ok)
+ 5800 ms:     Pang vai dormir 700 ms
+ 5900 ms:                     Pung dormiu     200 ms (ok)
+ 5900 ms:                     Pung vai dormir 600 ms
+ 5900 ms:         Peng dormiu     200 ms (ok)
+ 5900 ms:         Peng vai dormir 600 ms
+ 6100 ms:                 Pong dormiu     800 ms (ok)
+ 6100 ms:                 Pong vai dormir 500 ms
+ 6200 ms:             Ping dormiu     600 ms (ok)
+ 6200 ms:             Ping vai dormir 500 ms
+ 6500 ms:     Pang dormiu     700 ms (ok)
+ 6500 ms:     Pang vai dormir 700 ms
+ 6500 ms:                     Pung dormiu     600 ms (ok)
+ 6500 ms:                     Pung vai dormir 400 ms
+ 6500 ms:         Peng dormiu     600 ms (ok)
+ 6500 ms:         Peng vai dormir 400 ms
+ 6600 ms:                 Pong dormiu     500 ms (ok)
+ 6600 ms:                 Pong vai dormir 400 ms
+ 6700 ms:             Ping dormiu     500 ms (ok)
+ 6700 ms:             Ping vai dormir 300 ms
+ 6900 ms:                     Pung dormiu     400 ms (ok)
+ 6900 ms:                     Pung vai dormir 600 ms
+ 6900 ms:         Peng dormiu     400 ms (ok)
+ 6900 ms:         Peng vai dormir 900 ms
+ 7000 ms:                 Pong dormiu     400 ms (ok)
+ 7000 ms:                 Pong vai dormir 1000 ms
+ 7000 ms:             Ping dormiu     300 ms (ok)
+ 7000 ms:             Ping vai dormir 200 ms
+ 7200 ms:     Pang dormiu     700 ms (ok)
+ 7200 ms:     Pang vai dormir 400 ms
+ 7200 ms:             Ping dormiu     200 ms (ok)
+ 7200 ms:             Ping vai dormir 100 ms
+ 7300 ms:             Ping dormiu     100 ms (ok)
+ 7300 ms:             Ping vai dormir 0 ms
+ 7300 ms:             Ping dormiu     0 ms (ok)
+ 7300 ms:             Ping vai dormir 1000 ms
+ 7500 ms:                     Pung dormiu     600 ms (ok)
+ 7500 ms:                     Pung vai dormir 900 ms
+ 7600 ms:     Pang dormiu     400 ms (ok)
+ 7600 ms:     Pang vai dormir 400 ms
+ 7800 ms:         Peng dormiu     900 ms (ok)
+ 7800 ms:         Peng vai dormir 0 ms
+ 7800 ms:         Peng dormiu     0 ms (ok)
+ 7800 ms:         Peng vai dormir 1000 ms
+ 8000 ms:                 Pong dormiu     1000 ms (ok)
+ 8000 ms:                 Pong vai dormir 100 ms
+ 8000 ms:     Pang dormiu     400 ms (ok)
+ 8000 ms:     Pang vai dormir 200 ms
+ 8100 ms:                 Pong dormiu     100 ms (ok)
+ 8100 ms:                 Pong vai dormir 600 ms
+ 8200 ms:     Pang dormiu     200 ms (ok)
+ 8200 ms:     Pang vai dormir 900 ms
+ 8300 ms:             Ping dormiu     1000 ms (ok)
+ 8300 ms:             Ping vai dormir 700 ms
+ 8400 ms:                     Pung dormiu     900 ms (ok)
+ 8400 ms:                     Pung vai dormir 100 ms
+ 8500 ms:                     Pung dormiu     100 ms (ok)
+ 8500 ms:                     Pung vai dormir 400 ms
+ 8700 ms:                 Pong dormiu     600 ms (ok)
+ 8700 ms:                 Pong vai dormir 900 ms
+ 8800 ms:         Peng dormiu     1000 ms (ok)
+ 8800 ms:         Peng vai dormir 300 ms
+ 8900 ms:                     Pung dormiu     400 ms (ok)
+ 8900 ms:                     Pung vai dormir 900 ms
+ 9000 ms:             Ping dormiu     700 ms (ok)
+ 9000 ms:             Ping vai dormir 200 ms
+ 9100 ms:     Pang dormiu     900 ms (ok)
+ 9100 ms:     Pang vai dormir 1000 ms
+ 9100 ms:         Peng dormiu     300 ms (ok)
+ 9100 ms:         Peng vai dormir 300 ms
+ 9200 ms:             Ping dormiu     200 ms (ok)
+ 9200 ms:             Ping vai dormir 700 ms
+ 9400 ms:         Peng dormiu     300 ms (ok)
+ 9400 ms:         Peng vai dormir 600 ms
+ 9600 ms:                 Pong dormiu     900 ms (ok)
+ 9600 ms:                 Pong vai dormir 800 ms
+ 9800 ms:                     Pung dormiu     900 ms (ok)
+ 9800 ms:                     Pung vai dormir 900 ms
+ 9900 ms:             Ping dormiu     700 ms (ok)
+ 9900 ms:             Ping: fim
+Task 4 exit: running time  9900 ms, cpu time     0 ms, 18 activations
+10000 ms:         Peng dormiu     600 ms (ok)
+10000 ms:         Peng vai dormir 800 ms
+10100 ms:     Pang dormiu     1000 ms (ok)
+10100 ms:     Pang vai dormir 900 ms
+10400 ms:                 Pong dormiu     800 ms (ok)
+10400 ms:                 Pong vai dormir 400 ms
+10700 ms:                     Pung dormiu     900 ms (ok)
+10700 ms:                     Pung: fim
+Task 6 exit: running time 10700 ms, cpu time     0 ms, 20 activations
+10800 ms:         Peng dormiu     800 ms (ok)
+10800 ms:         Peng vai dormir 500 ms
+10800 ms:                 Pong dormiu     400 ms (ok)
+10800 ms:                 Pong vai dormir 900 ms
+11000 ms:     Pang dormiu     900 ms (ok)
+11000 ms:     Pang vai dormir 500 ms
+11300 ms:         Peng dormiu     500 ms (ok)
+11300 ms:         Peng vai dormir 900 ms
+11500 ms:     Pang dormiu     500 ms (ok)
+11500 ms:     Pang: fim
+Task 2 exit: running time 11500 ms, cpu time     0 ms, 21 activations
+11500 ms: main: Pang acabou
+11500 ms: main: espera Peng...
+11700 ms:                 Pong dormiu     900 ms (ok)
+11700 ms:                 Pong: fim
+Task 5 exit: running time 11700 ms, cpu time     0 ms, 19 activations
+12200 ms:         Peng dormiu     900 ms (ok)
+12200 ms:         Peng: fim
+Task 3 exit: running time 12200 ms, cpu time     0 ms, 20 activations
+12200 ms: main: Peng acabou
+12200 ms: main: espera Ping...
+12200 ms: main: Ping acabou
+12200 ms: main: espera Pong...
+12200 ms: main: Pong acabou
+12200 ms: main: espera Pung...
+12200 ms: main: Pung acabou
+12200 ms: main: fim
+Task 0 exit: running time 12200 ms, cpu time     0 ms, 3 activations
+Task 1 exit: running time 12200 ms, cpu time 12200 ms, 101 activations

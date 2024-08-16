@@ -30,6 +30,8 @@ typedef struct task_t
   unsigned int exec_time;
   unsigned int proc_time;
 
+  int awake_time;
+
   void* tasks_waiting;
 } task_t ;
 
