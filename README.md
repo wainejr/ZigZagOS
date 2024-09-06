@@ -9,6 +9,21 @@
 
 ZigZag is an operational system for embedded systems written in Zig
 
+## Run
+
+Make sure you have [Zig]() installed and you're on a Unix-like machine.
+
+After that you can run each test using the command
+
+```bash
+# test is locatec in tests/c
+zig build -Dtest=<test-name>
+./zig-out/bin/<test-name>
+# as in
+zig build -Dtest=dispatcher
+./zig-out/bin/dispatcher
+```
+
 
 ## Game dev HW ideas
 
